@@ -24,7 +24,6 @@ import javax.validation.Valid;
 
 /**
  * Wrapper for pre-consent authorize flow external response data.
- * Now includes display data for UI sections like blocked accounts.
  */
 public class PopulateConsentAuthorizeScreenDTO {
 
