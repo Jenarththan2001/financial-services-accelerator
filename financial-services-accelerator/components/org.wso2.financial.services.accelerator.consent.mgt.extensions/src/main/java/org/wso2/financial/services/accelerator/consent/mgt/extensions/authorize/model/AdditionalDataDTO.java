@@ -20,7 +20,6 @@ package org.wso2.financial.services.accelerator.consent.mgt.extensions.authorize
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import javax.validation.Valid;
@@ -29,17 +28,17 @@ import javax.validation.Valid;
  * Display data object for authorization UI consent retrieval.
  * Stores UI metadata and dynamic display items such as unavailable accounts.
  */
-public class AdditionalDisplayDataDTO {
+public class AdditionalDataDTO {
 
     /**
-     * UI Heading.
+     * UI Title.
      */
-    private String heading;
+    private String title;
 
     /**
-     * UI Sub heading.
+     * UI Subtitle.
      */
-    private String subHeading;
+    private String subtitle;
 
     /**
      * Tooltip/help description.
@@ -50,30 +49,27 @@ public class AdditionalDisplayDataDTO {
      * Dynamic display items.
      */
     @Valid
-    private List<Map<String, Object>> displayList = new ArrayList<>();
+    private List<AdditionalDataItemDTO> items = new ArrayList<>();
 
-    public AdditionalDisplayDataDTO() {
+    public AdditionalDataDTO() {
     }
 
-    // Heading
-    public String getHeading() {
-        return heading;
+    public String getTitle() {
+        return title;
     }
 
-    public void setHeading(String heading) {
-        this.heading = heading;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    // SubHeading
-    public String getSubHeading() {
-        return subHeading;
+    public String getSubtitle() {
+        return subtitle;
     }
 
-    public void setSubHeading(String subHeading) {
-        this.subHeading = subHeading;
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
     }
 
-    // Tooltip Description
     public String getDescription() {
         return description;
     }
@@ -82,20 +78,16 @@ public class AdditionalDisplayDataDTO {
         this.description = description;
     }
 
-    // Display Data
-    public List<Map<String, Object>> getDisplayList() {
-        return displayList;
+    public List<AdditionalDataItemDTO> getItems() {
+        return items;
     }
 
-    public void setDisplayList(List<Map<String, Object>> displayList) {
-        this.displayList = displayList;
+    public void setItems(List<AdditionalDataItemDTO> items) {
+        this.items = items;
     }
 
-    /**
-     * Convenience method to add a display item.
-     */
-    public AdditionalDisplayDataDTO addItem(Map<String, Object> item) {
-        this.displayList.add(item);
+    public AdditionalDataDTO addItem(AdditionalDataItemDTO item) {
+        this.items.add(item);
         return this;
     }
 
@@ -104,18 +96,18 @@ public class AdditionalDisplayDataDTO {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AdditionalDisplayDataDTO)) {
+        if (!(o instanceof AdditionalDataDTO)) {
             return false;
         }
-        AdditionalDisplayDataDTO that = (AdditionalDisplayDataDTO) o;
-        return Objects.equals(heading, that.heading) &&
-                Objects.equals(subHeading, that.subHeading) &&
+        AdditionalDataDTO that = (AdditionalDataDTO) o;
+        return Objects.equals(title, that.title) &&
+                Objects.equals(subtitle, that.subtitle) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(displayList, that.displayList);
+                Objects.equals(items, that.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(heading, subHeading, description, displayList);
+        return Objects.hash(title, subtitle, description, items);
     }
 }

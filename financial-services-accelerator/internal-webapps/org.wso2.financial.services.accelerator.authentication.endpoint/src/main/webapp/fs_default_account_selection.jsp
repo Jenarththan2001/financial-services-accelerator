@@ -49,7 +49,7 @@
     session.setAttribute("handleAccountSelectionSeparately", request.getAttribute("handleAccountSelectionSeparately"));
     session.setAttribute("onFollowingAccounts", request.getAttribute("onFollowingAccounts"));
     session.setAttribute("buttonConfirm", request.getAttribute("buttonConfirm"));
-    session.setAttribute("additionalSections", request.getAttribute("additionalSections"));
+    session.setAttribute("additionalData", request.getAttribute("additionalData"));
 %>
 
 <html>
@@ -85,32 +85,32 @@
                                         </div>
                                     </div>
 
-                                    <c:if test="${not empty additionalSections}">
-                                        <c:forEach var="section" items="${additionalSections}">
+                                    <c:if test="${not empty additionalData}">
+                                        <c:forEach var="additionalDataEntry" items="${additionalData}">
                                             <div class="form-group ui form select">
                                                 <hr class="separator">
 
                                                 <h4 class="ui body col-md-12">
-                                                    ${section.heading}
+                                                    ${additionalDataEntry.title}
                                                 </h4>
 
-                                                <c:if test="${not empty section.subHeading}">
+                                                <c:if test="${not empty additionalDataEntry.subtitle}">
                                                     <div class="col-md-12 pb-1">
                                                         <p class="fs-tooltip-content hide" style="text-align:left">
-                                                            ${section.description}
+                                                            ${additionalDataEntry.description}
                                                         </p>
 
                                                         <p>
-                                                            ${section.subHeading}
+                                                            ${additionalDataEntry.subtitle}
                                                             <a class="fs-tooltip-trigger"
-                                                               title="${section.subHeading}"
+                                                               title="${additionalDataEntry.subtitle}"
                                                                style="cursor: help; text-decoration: none;">&#9432;</a>
                                                         </p>
                                                     </div>
                                                 </c:if>
                                                 <div class="col-md-12">
-                                                    <c:forEach var="record" items="${section.displayList}">
-                                                        <label>${record.displayText}</label>
+                                                    <c:forEach var="record" items="${additionalDataEntry.items}">
+                                                        <label>${record.item}</label>
                                                         <br/>
                                                     </c:forEach>
                                                 </div>

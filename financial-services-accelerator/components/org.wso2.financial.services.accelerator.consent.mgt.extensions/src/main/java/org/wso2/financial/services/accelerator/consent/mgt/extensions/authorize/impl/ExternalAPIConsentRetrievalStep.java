@@ -159,9 +159,9 @@ public class ExternalAPIConsentRetrievalStep implements ConsentRetrievalStep {
             }
 
             // Append display data, if exists, to json object
-            if (responseDTO.getAdditionalDisplayData() != null) {
-                jsonObject.put(ConsentAuthorizeConstants.ADDITIONAL_DISPLAY_DATA,
-                        new JSONArray(objectMapper.writeValueAsString(responseDTO.getAdditionalDisplayData())));
+            if (responseDTO.getAdditionalData() != null) {
+                jsonObject.put(ConsentAuthorizeConstants.ADDITIONAL_DATA,
+                        new JSONArray(objectMapper.writeValueAsString(responseDTO.getAdditionalData())));
             }
 
             // Set request parameters as metadata to be used in persistence extension

@@ -2354,40 +2354,43 @@ components:
                   selected:
                     type: boolean
                     description: Whether the account is selected by default
-        additionalDisplayData:
+        additionalData:
           type: array
-          description: Additional display data sections for the authorization screen
+          description: Additional data for the authorization screen
           items:
-            $ref: '#/components/schemas/AdditionalDisplayDataSection'
+            $ref: '#/components/schemas/AdditionalData'
 
-    AdditionalDisplayDataSection:
+    AdditionalData:
       type: object
-      description: A section of additional display data with heading, subheading, description and display list
+      description: Additional data with title, subtitle, description and items
       properties:
-        heading:
+        title:
           type: string
-          description: Section heading
-        subHeading:
+          description: Title
+        subtitle:
           type: string
-          description: Section sub-heading
+          description: Subtitle
         description:
           type: string
-          description: Descriptive text displayed in a tooltip adjacent to the sub-heading
-        displayList:
+          description: Description
+        items:
           type: array
-          description: List of display items
+          description: List of items
           items:
-            $ref: '#/components/schemas/DisplayListItem'
+            $ref: '#/components/schemas/AdditionalDataItem'
 
-    DisplayListItem:
+    AdditionalDataItem:
       type: object
-      description: Individual display list item
+      description: Individual additional data item
       properties:
-        displayText:
+        item:
           type: string
-          description: Text to display in the list
+          description: Item value
+        type:
+          type: string
+          description: Item type
       required:
-        - displayText
+        - item
 
     AuthorizedResources:
       type: object

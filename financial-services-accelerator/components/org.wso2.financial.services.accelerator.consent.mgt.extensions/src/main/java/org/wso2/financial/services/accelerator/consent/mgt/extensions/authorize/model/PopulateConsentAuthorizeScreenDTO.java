@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.financial.services.accelerator.consent.mgt.extensions.authorize.model;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class PopulateConsentAuthorizeScreenDTO {
     private ConsumerDataDTO consumerData;
 
     @Valid
-    private List<AdditionalDisplayDataDTO> additionalDisplayData;
+    private List<AdditionalDataDTO> additionalData;
 
     public ConsentDataDTO getConsentData() {
         return consentData;
@@ -52,11 +53,11 @@ public class PopulateConsentAuthorizeScreenDTO {
         this.consumerData = consumerData;
     }
 
-    public List<AdditionalDisplayDataDTO> getAdditionalDisplayData() {
-        return additionalDisplayData;
+    public List<AdditionalDataDTO> getAdditionalData() {
+        return additionalData;
     }
 
-    public void setAdditionalDisplayData(List<AdditionalDisplayDataDTO> additionalDisplayData) {
-        this.additionalDisplayData = additionalDisplayData;
+    public void setAdditionalData(List<AdditionalDataDTO> additionalData) {
+        this.additionalData = additionalData;
     }
 }

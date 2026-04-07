@@ -206,7 +206,7 @@ public class Utils {
         }
 
         List<Map<String, Object>> sections =
-                (List<Map<String, Object>>) dataSetMap.get(ConsentAuthorizeConstants.ADDITIONAL_DISPLAY_DATA);
+                (List<Map<String, Object>>) dataSetMap.get(ConsentAuthorizeConstants.ADDITIONAL_DATA);
 
         attributeMap.put(ConsentAuthorizeConstants.BASIC_CONSENT_DATA, basicConsentData);
         attributeMap.put(ConsentAuthorizeConstants.PERMISSIONS, permissions);
@@ -221,7 +221,7 @@ public class Utils {
                 (permissions != null && permissions.size() > 1));
 
         // multisection list for the UI
-        attributeMap.put(ConsentAuthorizeConstants.ADDITIONAL_DISPLAY_SECTION_TAG, sections);
+        attributeMap.put(ConsentAuthorizeConstants.ADDITIONAL_DATA, sections);
     }
 
     private static void appendI18nAttributes(Map<String, Object> dataSetMap, Map<String, Object> attributeMap) {
