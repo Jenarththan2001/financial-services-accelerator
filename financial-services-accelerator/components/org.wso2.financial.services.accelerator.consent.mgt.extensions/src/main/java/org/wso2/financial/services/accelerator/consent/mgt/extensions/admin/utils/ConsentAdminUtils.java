@@ -145,4 +145,50 @@ public class ConsentAdminUtils {
         consentResource.put(ConsentExtensionConstants.MAPPING_RESOURCES, consentMappingResources);
         return consentResource;
     }
+
+    /**
+     * Construct consent attribute response from consent IDs, attribute key and attribute value.
+     * This method will be used to construct the response for consent attributes endpoint when there are multiple
+     * consents with the same attribute key and same attribute value.
+     *
+     * @param consentIds        list of consent IDs which have the same attribute key and attribute value
+     * @param attributeKey      attribute key
+     * @param attributeValue    attribute value
+     * @return JSONArray consent attribute response array
+     */
+    public static JSONArray constructConsentAttributeResponse(ArrayList<String> consentIds, String attributeKey,
+                                                              String attributeValue) {
+        JSONArray consentAttribute = new JSONArray();
+        for (String consentId : consentIds) {
+            JSONObject consentAttributeObj = new JSONObject();
+            consentAttributeObj.put(ConsentExtensionConstants.CC_CONSENT_ID, consentId);
+            consentAttributeObj.put(ConsentExtensionConstants.ATTRIBUTE_KEY, attributeKey);
+            consentAttributeObj.put(ConsentExtensionConstants.ATTRIBUTE_VALUE, attributeValue);
+            consentAttribute.put(consentAttributeObj);
+        }
+        return consentAttribute;
+    }
+
+    /**
+     * Construct consent attribute response from consent details map retrieved fot attribute key. Consent details map
+     * contains consent ID as key and attribute value as value. This method will be used to construct the response
+     * for consent attributes endpoint when there are multiple consents with the same attribute key and different
+     * attribute values.
+     *
+     * @param consentDetailsMap consent details map
+     * @param attributeName attribute name for which the consent details are retrieved
+     * @return JSONArray consent attribute response array
+     */
+    public static JSONArray constructConsentAttributeResponse(Map<String, String> consentDetailsMap,
+                                                              String attributeName) {
+        JSONArray consentAttribute = new JSONArray();
+        for (Map.Entry<String, String> entry : consentDetailsMap.entrySet()) {
+            JSONObject consentAttributeObj = new JSONObject();
+            consentAttributeObj.put(ConsentExtensionConstants.CC_CONSENT_ID, entry.getKey());
+            consentAttributeObj.put(ConsentExtensionConstants.ATTRIBUTE_KEY, attributeName);
+            consentAttributeObj.put(ConsentExtensionConstants.ATTRIBUTE_VALUE, entry.getValue());
+            consentAttribute.put(consentAttributeObj);
+        }
+        return consentAttribute;
+    }
 }
