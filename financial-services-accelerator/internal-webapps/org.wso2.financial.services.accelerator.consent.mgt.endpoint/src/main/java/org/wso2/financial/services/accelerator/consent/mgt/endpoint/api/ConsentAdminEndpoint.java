@@ -188,6 +188,22 @@ public class ConsentAdminEndpoint {
     }
 
     /**
+     * Search consent attributes for a provided attribute name or attribute value.
+     */
+    @GET
+    @Path("/search/consent-attributes")
+    @Consumes({ "application/x-www-form-urlencoded" })
+    @Produces({ "application/json; charset=utf-8" })
+    public Response searchConsentAttributes(@Context HttpServletRequest request, @Context HttpServletResponse response,
+                                            @Context UriInfo uriInfo) {
+
+        ConsentAdminData consentAdminData = new ConsentAdminData(ConsentUtils.getHeaders(request),
+                uriInfo.getQueryParameters(), uriInfo.getAbsolutePath().getPath(), request, response);
+        consentAdminHandler.handleSearchConsentAttributes(consentAdminData);
+        return sendResponse(consentAdminData);
+    }
+
+    /**
      * Method to send response using the payload and response status.
      * 
      * @param consentAdminData Consent admin data

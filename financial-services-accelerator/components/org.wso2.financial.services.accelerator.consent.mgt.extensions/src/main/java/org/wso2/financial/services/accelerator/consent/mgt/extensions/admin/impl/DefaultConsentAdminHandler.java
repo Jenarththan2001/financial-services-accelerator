@@ -455,6 +455,47 @@ public class DefaultConsentAdminHandler implements ConsentAdminHandler {
         consentAdminData.setResponsePayload(response);
     }
 
+    @Override
+    public void handleSearchConsentAttributes(ConsentAdminData consentAdminData) throws ConsentException {
+
+        JSONObject response = new JSONObject();
+
+        Map queryParams = consentAdminData.getQueryParams();
+
+        String attributeKey = ConsentAdminUtils.validateAndGetQueryParam(queryParams,
+                ConsentExtensionConstants.ATTRIBUTE_KEY);
+        String attributeValue = ConsentAdminUtils.validateAndGetQueryParam(queryParams,
+                ConsentExtensionConstants.ATTRIBUTE_VALUE);
+
+        if (StringUtils.isBlank(attributeKey) && StringUtils.isBlank(attributeValue)) {
+            log.error("Request missing the mandatory query parameters: attributeKey or attributeValue");
+            throw new ConsentException(ResponseStatus.BAD_REQUEST, "Mandatory query parameters 'attributeKey' or " +
+                    "'attributeValue' are not available");
+        }
+
+        ConsentCoreService consentCoreService = ConsentExtensionsDataHolder.getInstance().getConsentCoreService();
+
+        try {
+            JSONArray searchResults = new JSONArray();
+            if (attributeValue != null) {
+                ArrayList<String> consentIds = consentCoreService
+                        .getConsentIdByConsentAttributeNameAndValue(attributeKey, attributeValue);
+                searchResults = ConsentAdminUtils.constructConsentAttributeResponse(consentIds, attributeKey,
+                        attributeValue);
+            } else {
+                Map<String, String> consentDetailsMap = consentCoreService.getConsentAttributesByName(attributeKey);
+                searchResults = ConsentAdminUtils.constructConsentAttributeResponse(consentDetailsMap, attributeKey);
+            }
+
+            response.put(ConsentExtensionConstants.DATA.toLowerCase(), searchResults);
+        } catch (ConsentManagementException e) {
+            log.error("Error while searching consent attributes : ", e);
+            throw new ConsentException(ResponseStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+
+        consentAdminData.setResponseStatus(ResponseStatus.OK);
+        consentAdminData.setResponsePayload(response);
+    }
 
     /**
      * Filter the consent data based on the accounts.

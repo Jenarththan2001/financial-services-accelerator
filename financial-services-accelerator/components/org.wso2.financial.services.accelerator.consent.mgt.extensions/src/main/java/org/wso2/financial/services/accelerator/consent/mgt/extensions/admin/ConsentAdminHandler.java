@@ -73,4 +73,12 @@ public interface ConsentAdminHandler {
      */
     public void handleConsentFileSearch(ConsentAdminData consentAdminData) throws ConsentException;
 
+    /**
+     * This method is used to handle the consent attributes search for a provided attribute name or attribute value.
+     *
+     * @param consentAdminData Data wrapper for consent admin data that holds the request context data
+     * @throws ConsentException  thrown if any error occurs in the process
+     */
+    public void handleSearchConsentAttributes(ConsentAdminData consentAdminData) throws ConsentException;
+
 }

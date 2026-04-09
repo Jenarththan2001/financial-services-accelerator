@@ -257,4 +257,16 @@ public class TestUtil {
         responseDTO.setConsentResource(resource);
         return responseDTO;
     }
+
+    public static ArrayList<String> getSampleConsentIDsList() {
+
+        return new ArrayList<>(List.of(UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+                UUID.randomUUID().toString()));
+    }
+
+    public static Map<String, String> getSampleConsentIDAttributeValueList() {
+
+        return Map.of(UUID.randomUUID().toString(), "TestValue1", UUID.randomUUID().toString(), "TestValue2",
+                UUID.randomUUID().toString(), "TestValue3");
+    }
 }
