@@ -17,7 +17,7 @@ servers:
         default: localhost
         description: Host of the Key Manager
       km_port:
-        default: "9443"
+        default: "9446"
         description: Port of the Key Manager
 paths:
   /manage:
@@ -200,6 +200,80 @@ paths:
                 $ref: "#/components/schemas/ConsentErrorCommon"
       security:
         - basicAuth: []
+  /manage/fileUpload:
+    post:
+      summary: Upload consent file
+      operationId: manageFileUploadPost
+      tags:
+        - Manage
+      parameters:
+        - in: header
+          name: x-wso2-client-id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: File upload payload
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ConsentManageFileUploadPayload"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentManageCreatedResponse"
+        "400":
+          description: Required parameters unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+      security:
+        - basicAuth: []
+    get:
+      summary: Retrieve consent file
+      operationId: manageFileGet
+      tags:
+        - Manage
+      parameters:
+        - in: header
+          name: x-wso2-client-id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Required parameters unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+      security:
+        - basicAuth: []
+
   /authorize/retrieve/{session-data-key}:
     get:
       summary: Retrieve data for consent page
@@ -423,7 +497,206 @@ paths:
                 $ref: "#/components/schemas/ConsentErrorCommon"
       security:
         - basicAuth: []
-
+  /admin/search/consent-status-audit:
+    get:
+      summary: Search consent status audit records
+      operationId: searchConsentStatusAudit
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: consentID
+          schema:
+            type: string
+        - in: query
+          name: currentStatus
+          schema:
+            type: string
+        - in: query
+          name: statusAuditID
+          schema:
+            type: string
+        - in: query
+          name: actionBy
+          schema:
+            type: string
+        - in: query
+          name: fromTime
+          schema:
+            type: integer
+        - in: query
+          name: toTime
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentSearchOKResponse"
+        "400":
+          description: Required parameters unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+      security:
+        - basicAuth: []
+  /admin/search/consent-file:
+    get:
+      summary: Search consent file information
+      operationId: searchConsentFile
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: consentID
+          schema:
+            type: string
+        - in: query
+          name: userID
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentSearchOKResponse"
+        "400":
+          description: Required parameters unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+      security:
+        - basicAuth: []
+  /admin/search/consent-attributes:
+    get:
+      summary: Search consent attributes by name or value
+      operationId: searchConsentAttributes
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: attributeKey
+          schema:
+            type: string
+        - in: query
+          name: attributeValue
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentAttributeSearchOKResponse"
+        "400":
+          description: Required parameters unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+      security:
+        - basicAuth: []
+  /admin/consent-amendment-history:
+    get:
+      summary: Get consent amendment history
+      operationId: getConsentAmendmentHistory
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: consentID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentSearchOKResponse"
+        "400":
+          description: Required parameters unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+      security:
+        - basicAuth: []
+  /admin/expire-consents:
+    get:
+      summary: Invoke consent expiration task
+      operationId: expireConsents
+      tags:
+        - Admin
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentManageOKResponse"
+        "400":
+          description: Required parameters unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentErrorCommon"
+      security:
+        - basicAuth: []
 components:
   schemas:
     ConsentValidateDetail:
@@ -472,6 +745,8 @@ components:
     ConsentManageUpdatePayload:
       type: object
     ConsentManagePatchPayload:
+      type: object
+    ConsentManageFileUploadPayload:
       type: object
     ConsentAuthorizePatchPayload:
       type: object
@@ -553,6 +828,14 @@ components:
             $ref: "#/components/schemas/ConsentDetail"
         meatadata:
           $ref: "#/components/schemas/ConsentSearchMetadata"
+    ConsentAttributeSearchOKResponse:
+      type: object
+      properties:
+        data:
+          description: Search results for consent attributes
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsentAttributes"
     ConsentManageOKResponse:
       type: object
     ConsentManageCreatedResponse:
@@ -649,6 +932,19 @@ components:
           description: Consent Frequency
           type: string
           example: "0"
+    ConsentAttributes:
+      type: object
+      properties:
+        consentId:
+          description: Consent ID associated with the consent
+          type: string
+          example: "W4QaMjYv9rn49O7dpeBQD5DLGFQa"
+        attributeKey:
+          description: Key of the consent attribute
+          type: string
+        attributeValue:
+          description: Value of the consent attributes
+          type: string
     ConsentSearchMetadata:
       type: object
       properties:
