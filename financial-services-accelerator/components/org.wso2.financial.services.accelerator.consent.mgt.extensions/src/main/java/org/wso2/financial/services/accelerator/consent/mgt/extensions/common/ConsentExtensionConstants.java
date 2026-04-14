@@ -89,6 +89,8 @@ public class ConsentExtensionConstants {
     public static final String FILE_UPLOAD_CREATED_TIME = "FileUploadCreatedTime";
     public static final String IDEMPOTENCY_KEY = "IdempotencyKey";
     public static final String FILE_UPLOAD_IDEMPOTENCY_KEY = "FileUploadIdempotencyKey";
+    public static final String ATTRIBUTE_KEY = "key";
+    public static final String ATTRIBUTE_VALUE = "value";
 
     //Consent Auth Servlet Constants
     public static final String DEBTOR_ACCOUNT_ID = "AccountId";

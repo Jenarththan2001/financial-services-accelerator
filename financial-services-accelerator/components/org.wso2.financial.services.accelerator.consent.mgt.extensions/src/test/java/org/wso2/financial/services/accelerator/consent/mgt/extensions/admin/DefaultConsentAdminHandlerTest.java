@@ -39,6 +39,7 @@ import org.wso2.financial.services.accelerator.consent.mgt.extensions.admin.mode
 import org.wso2.financial.services.accelerator.consent.mgt.extensions.admin.model.ExternalAPIAdminConsentSearchRequestDTO;
 import org.wso2.financial.services.accelerator.consent.mgt.extensions.admin.model.ExternalAPIAdminConsentSearchResponseDTO;
 import org.wso2.financial.services.accelerator.consent.mgt.extensions.admin.utils.ExternalAPIConsentAdminUtils;
+import org.wso2.financial.services.accelerator.consent.mgt.extensions.common.ConsentException;
 import org.wso2.financial.services.accelerator.consent.mgt.extensions.common.ConsentExtensionConstants;
 import org.wso2.financial.services.accelerator.consent.mgt.extensions.common.ConsentExtensionExporter;
 import org.wso2.financial.services.accelerator.consent.mgt.extensions.common.ResponseStatus;
@@ -115,6 +116,10 @@ public class DefaultConsentAdminHandlerTest {
                 anyInt(), anyInt());
         doReturn(TestUtil.getSampleConsentFileObject(TestConstants.SAMPLE_CONSENT_FILE)).when(consentCoreServiceMock)
                 .getConsentFile(anyString());
+        doReturn(TestUtil.getSampleConsentIDsList()).when(consentCoreServiceMock)
+                .getConsentIdByConsentAttributeNameAndValue(anyString(), anyString());
+        doReturn(TestUtil.getSampleConsentIDAttributeValueList()).when(consentCoreServiceMock)
+                .getConsentAttributesByName(anyString());
 
         configs = new HashMap<String, Object>();
         configs.put(FinancialServicesConstants.MAX_INSTRUCTED_AMOUNT, "1000");
@@ -241,6 +246,29 @@ public class DefaultConsentAdminHandlerTest {
         verify(consentAdminDataMock).setResponseStatus(ResponseStatus.OK);
     }
 
+    @Test
+    public void testHandleSearchConsentAttributesWithAttributeKeyValue() {
+        ConsentAdminData consentAdminDataMock = mock(ConsentAdminData.class);
+        doReturn(getQueryParamsWithAttributeKeyValue()).when(consentAdminDataMock).getQueryParams();
+        defaultConsentAdminHandler.handleSearchConsentAttributes(consentAdminDataMock);
+        verify(consentAdminDataMock).setResponseStatus(ResponseStatus.OK);
+    }
+
+    @Test
+    public void testHandleSearchConsentAttributesWithAttributeKey() {
+        ConsentAdminData consentAdminDataMock = mock(ConsentAdminData.class);
+        doReturn(getQueryParamsWithAttributeKey()).when(consentAdminDataMock).getQueryParams();
+        defaultConsentAdminHandler.handleSearchConsentAttributes(consentAdminDataMock);
+        verify(consentAdminDataMock).setResponseStatus(ResponseStatus.OK);
+    }
+
+    @Test(expectedExceptions = ConsentException.class)
+    public void testHandleSearchConsentAttributesWithoutAttributeKeyValue() {
+        ConsentAdminData consentAdminDataMock = mock(ConsentAdminData.class);
+        doReturn(getQueryParams()).when(consentAdminDataMock).getQueryParams();
+        defaultConsentAdminHandler.handleSearchConsentAttributes(consentAdminDataMock);
+    }
+
     private Map getQueryParams() {
         Map queryParams = new HashMap();
         queryParams.put(ConsentExtensionConstants.CC_CONSENT_ID, new ArrayList<>(Collections
@@ -275,6 +303,24 @@ public class DefaultConsentAdminHandlerTest {
                 .singletonList(TestConstants.SAMPLE_USER_ID)));
         queryParams.put(ConsentExtensionConstants.ACCOUNT_IDS, new ArrayList<>(Collections
                 .singletonList(TestConstants.SAMPLE_ACCOUNT_ID)));
+
+        return queryParams;
+    }
+
+    private Map getQueryParamsWithAttributeKeyValue() {
+        Map queryParams = new HashMap();
+        queryParams.put(ConsentExtensionConstants.ATTRIBUTE_KEY, new ArrayList<>(Collections
+                .singletonList("sampleKey")));
+        queryParams.put(ConsentExtensionConstants.ATTRIBUTE_VALUE,  new ArrayList<>(Collections
+                .singletonList("sampleValue")));
+
+        return queryParams;
+    }
+
+    private Map getQueryParamsWithAttributeKey() {
+        Map queryParams = new HashMap();
+        queryParams.put(ConsentExtensionConstants.ATTRIBUTE_KEY, new ArrayList<>(Collections
+                .singletonList("sampleKey")));
 
         return queryParams;
     }
